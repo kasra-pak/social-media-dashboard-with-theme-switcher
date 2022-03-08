@@ -25,6 +25,7 @@ $very-dark-blue-top-bg-pattern: hsl(232, 19%, 15%)
 $dark-desaturated-blue-card-bg: hsl(228, 28%, 20%)
 $desaturated-blue-text: hsl(228, 34%, 66%)
 $white-text: hsl(0, 0%, 100%)
+$box-hover-dark: hsl(228, 28%, 30%)
 
 // #### Light Theme
 
@@ -33,10 +34,28 @@ $very-pale-blue-top-bg-pattern: hsl(225, 100%, 98%)
 $light-grayish-blue-card-bg: hsl(227, 47%, 96%)
 $dark-grayish-blue-text: hsl(228, 12%, 44%)
 $very-dark-blue-text: hsl(230, 17%, 14%)
+$box-hover-light: hsl(227, 27%, 92%)
 
 // ---===Mixins===--- //
 
 // ---===Styles===--- //
+\:root
+  --primary-bg: #{$white-bg}
+  --top-bg: #{$very-pale-blue-top-bg-pattern}
+  --card-bg: #{$light-grayish-blue-card-bg}
+  --primary-text: #{$very-dark-blue-text}
+  --secondary-text: #{$dark-grayish-blue-text}
+  --box-hover: #{$box-hover-light}
+  --toggle: #{$toggle}
+
+.dark-theme
+  --primary-bg: #{$very-dark-blue-bg}
+  --top-bg: #{$very-dark-blue-top-bg-pattern}
+  --card-bg: #{$dark-desaturated-blue-card-bg}
+  --primary-text: #{$white-text}
+  --secondary-text: #{$desaturated-blue-text}
+  --box-hover: #{$box-hover-dark}
+  --toggle: #{$toggle-dark}
 
 *,
 *::before,
@@ -47,8 +66,8 @@ html
   font-style: 14px
 
 body
-  background: linear-gradient(to bottom, $very-pale-blue-top-bg-pattern 13%, $white-bg 13%)
-  color: $very-dark-blue-text
+  background: linear-gradient(to bottom, var(--top-bg) 32vh, var(--primary-bg) 32vh) no-repeat
+  color: var(--primary-text)
   font-family: 'Inter', sans-serif
   min-height: 100vh
   margin: 0
@@ -59,7 +78,8 @@ img
   display: block
 
 .header
-  margin-bottom: 2em
+  margin-bottom: 1.25em
+  flex: 1 1 100%
 
 .header__title,
 .overview__title
@@ -69,12 +89,12 @@ img
 .header__subtitle
   font-weight: 700
   margin: .25em 0 1em 0
-  color: $dark-grayish-blue-text
+  color: var(--secondary-text)
 
 .theme-switcher-container
-  color: $dark-grayish-blue-text
+  color: var(--secondary-text)
   font-weight: 700
-  border-top: 2px solid $dark-grayish-blue-text
+  border-top: 2px solid var(--secondary-text)
   display: flex
   align-items: center
   justify-content: space-between
@@ -84,30 +104,41 @@ img
     margin: 0
 
 .switch-toggle
-  background-color: $toggle
+  background: var(--toggle)
   width: 55px
   height: 26px
   border-radius: 100px
   position: relative
+  cursor: pointer
+
+  &:hover
+    background: $toggle-dark
 
 .switch
+  background-color: var(--card-bg)
   position: absolute
   width: 35%
-  height: 75%
+  height: 77%
   border-radius: 100%
   top: 50%
-  left: 7%
-  transform: translateY(-50%)
-  background-color: $white-bg
+  right: 7%
+  transform: translate(0, -50%)
+  transition: transform .2s ease
+
+.switch--left
+  transform: translate(-150%, -50%)
 
 .social-boxes
   display: flex
-  flex-direction: column
+  flex-flow: row wrap
+  justify-content: space-between
   gap: 1.5em
+  flex: 1 1 100%
 
 .social-box
-  background-color: $light-grayish-blue-card-bg
+  background-color: var(--card-bg)
   padding: 2em 0 1.75em
+  flex: 1 1 250px
   display: flex
   flex-flow: row wrap
   justify-content: center
@@ -126,21 +157,28 @@ img
     border-top-left-radius: .4em
     border-top-right-radius: .4em
 
-.social-box:nth-child(1)
-  &::before
-    background-color: $facebook
+  &:hover
+    cursor: pointer
+    background-color: var(--box-hover)
 
 .social-box:nth-child(2)
   &::before
-    background-color: $twitter
+    background-color: $facebook
 
 .social-box:nth-child(3)
   &::before
-    background: $instagram
+    background-color: $twitter
 
 .social-box:nth-child(4)
   &::before
+    background: $instagram
+
+.social-box:nth-child(5)
+  &::before
     background-color: $youtube
+
+.social-box__id
+  color: var(--secondary-text)
 
 .social-box__id,
 .changes
@@ -154,7 +192,7 @@ img
   p
     margin: 0
     text-transform: uppercase
-    color: $dark-grayish-blue-text
+    color: var(--secondary-text)
     font:
       size: .8rem
       weight: 400
@@ -182,26 +220,36 @@ img
     content: url('../../images/icon-down.svg')
 
 .overview__title
-  color: $dark-grayish-blue-text
-  margin: 2.25em 0 1em
+  color: var(--secondary-text)
+  margin: 1.75em 0 .5em
+  flex: 1 0 100%
+
+.dark-theme .overview__title
+  color: var(--primary-text)
 
 .overview-boxes
   display: flex
-  flex-direction: column
-  gap: 1em 0
+  flex-flow: row wrap
+  justify-content: space-between
+  gap: 1em
 
 .overview-box
-  background-color: $light-grayish-blue-card-bg
+  background-color: var(--card-bg)
   border-radius: .4em
   padding: 1.5em 1.5em 1em
+  flex: 1 1 250px
   display: grid
   grid-template-columns: 1fr auto
   align-items: baseline
   gap: 1.5em 0
 
+  &:hover
+    cursor: pointer
+    background-color: var(--box-hover)
+
 .overview-box__heading
   font-weight: 700
-  color: $dark-grayish-blue-text
+  color: var(--secondary-text)
 
 .overview-box__logo
   justify-self: end
@@ -212,3 +260,32 @@ img
     weight: 700
 
 // ---===MediaQueries===--- //
+
+@media (min-width: 600px)
+  .header
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    margin-bottom: 0
+
+  .header__subtitle
+    flex: 1 1 100%
+    order: 1
+
+  .theme-switcher-container
+    border: none
+    padding: 0
+    justify-content: end
+    gap: 1em
+
+@media (min-width: 830px)
+
+  body
+    max-width: 80vw
+    margin: 0 auto
+
+  .header__title,
+    font-size: 1.7rem
+
+  .overview__title
+    font-size: 1.6rem
